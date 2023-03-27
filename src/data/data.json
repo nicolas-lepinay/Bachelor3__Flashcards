@@ -1,0 +1,24 @@
+{
+    "categories": [
+        {
+            "id": "1",
+            "name": "Histoire",
+            "icon": "colonne.png"
+        },
+        {
+            "id": "2",
+            "name": "Anglais",
+            "icon": "united-kingdom.png"
+        },
+        {
+            "id": "3",
+            "name": "Culture",
+            "icon": "holy-gate.png"
+        },
+        {
+            "id": "4",
+            "name": "Géographie",
+            "icon": "globe.png"
+        }
+    ]
+}

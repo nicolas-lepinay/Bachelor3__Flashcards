@@ -1,0 +1,139 @@
+$spacer: 16px;
+
+.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.jcc {
+    justify-content: center;
+}
+
+.aic {
+    align-items: center;
+}
+
+.col {
+    flex-direction: column;
+}
+
+@mixin gap($i) {
+    gap: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .g-#{$i} { 
+        @include gap($i); 
+    }
+}
+
+.btn {
+    border-radius: 1000px;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    &.inactive {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}
+
+// MARGINS
+@mixin margin-right($i) {
+    margin-right: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .mr-#{$i} { 
+        @include margin-right($i); 
+    }
+}
+
+@mixin margin-left($i) {
+    margin-left: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .ml-#{$i} { 
+        @include margin-left($i); 
+    }
+}
+
+@mixin margin-y($i) {
+    margin-top: $spacer * $i;
+    margin-bottom: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .my-#{$i} { 
+        @include margin-y($i); 
+    }
+}
+
+@mixin margin-x($i) {
+    margin-left: $spacer * $i;
+    margin-right: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .mx-#{$i} { 
+        @include margin-x($i); 
+    }
+}
+
+// PADDINGS
+@mixin padding-right($i) {
+    padding-right: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .pr-#{$i} { 
+        @include padding-right($i); 
+    }
+}
+
+@mixin padding-left($i) {
+    padding-left: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .pl-#{$i} { 
+        @include padding-left($i); 
+    }
+}
+
+@mixin padding-top($i) {
+    padding-top: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .pt-#{$i} { 
+        @include padding-top($i); 
+    }
+}
+
+@mixin padding-y($i) {
+    padding-top: $spacer * $i;
+    padding-bottom: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .py-#{$i} { 
+        @include padding-y($i); 
+    }
+}
+
+@mixin padding-x($i) {
+    padding-left: $spacer * $i;
+    padding-right: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .px-#{$i} { 
+        @include padding-x($i); 
+    }
+}
+
+// FLEX GAP
+@mixin gap($i) {
+    gap: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .g-#{$i} { 
+        @include gap($i); 
+    }
+}
