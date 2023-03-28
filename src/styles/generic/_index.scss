@@ -108,6 +108,15 @@ $spacer: 16px;
     }
 }
 
+@mixin padding-bottom($i) {
+    padding-bottom: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .pb-#{$i} { 
+        @include padding-bottom($i); 
+    }
+}
+
 @mixin padding-y($i) {
     padding-top: $spacer * $i;
     padding-bottom: $spacer * $i;

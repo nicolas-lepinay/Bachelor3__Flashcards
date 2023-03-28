@@ -5,6 +5,7 @@
                 <h2 class="primary fw-600">Je veux réviser...</h2>
                 <SquareList :items="categories" class="pt-2"></SquareList>
             </div>
+            <button class="add-btn">+</button>
         </Sheet>
     </Wrapper>
 </template>
@@ -23,12 +24,12 @@ export default {
         }
     },
     mounted() {
-        // const categories = localStorage.getItem('flashcards_categories');
-        // if(!categories) {
-        //     const categoriesData = [
-
-        //     ]
-        // }
+        let categories = localStorage.getItem('flashcards_categories');
+        if(!categories) {
+            localStorage.setItem('flashcards_categories', JSON.stringify(this.categories));
+            categories = localStorage.getItem('flashcards_categories');
+        }
+        this.categories = categories;
     },
     components: {
         Wrapper,

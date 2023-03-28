@@ -18,7 +18,6 @@ export default {
 .wrapper {
     border-radius: 40px;
     box-shadow: rgba(23, 17, 61, 0.13) 0px 48px 100px 0px;
-    cursor: pointer;
     height: 90vh;
     margin: auto;
     max-width: 100vw;
