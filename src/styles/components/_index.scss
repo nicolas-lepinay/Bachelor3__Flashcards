@@ -12,3 +12,15 @@
     right: 40px;
     width: 50px;
 }
+
+.btn {
+    border-radius: 1000px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 10px 20px;
+    &.inactive {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+}

@@ -26,17 +26,6 @@ $spacer: 16px;
     }
 }
 
-.btn {
-    border-radius: 1000px;
-    border: none;
-    outline: none;
-    padding: 10px 20px;
-    &.inactive {
-        opacity: 0.4;
-        pointer-events: none;
-    }
-}
-
 .w-100 {
     width: 100%;
 }
@@ -144,5 +133,23 @@ $spacer: 16px;
 @for $i from 0 through 10 {
     .g-#{$i} { 
         @include gap($i); 
+    }
+}
+
+// FONTS
+@mixin font-size($size) {
+    font-size: $size + px;
+}
+
+@for $i from 1 through 200 {
+    .fs-#{$i} { @include font-size($i); }
+}
+
+@mixin bold($i) {
+    font-weight: $i;
+}
+@for $i from 100 through 900 {
+    .fw-#{$i} { 
+        @include bold($i); 
     }
 }
