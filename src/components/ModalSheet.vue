@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="backdrop" @click="$emit('close')"></div>
+        <div class="backdrop" @click="$emit('close')" :class="`d-${$attrs.backdrop}`"></div>
         <div class='modal' :class="`h-${$attrs.height}`" >
             <slot></slot>
         </div>
@@ -17,6 +17,7 @@ export default {
     name: 'Modal',
     data() {
         return {
+            isBackdrop: true,
             showModal: false
         }
     },
@@ -33,6 +34,7 @@ export default {
     margin: 0;
     overflow-y: auto;
     padding: 1rem 2rem;
+    overflow-x: hidden;
     position: absolute;
     width: 100%;
     white-space: normal; 

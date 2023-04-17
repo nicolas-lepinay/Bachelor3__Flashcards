@@ -22,6 +22,7 @@ export default {
     flex-wrap: wrap;
     margin: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     position: absolute;
     width: 100%;
     white-space: normal; 

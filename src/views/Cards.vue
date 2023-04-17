@@ -1,11 +1,28 @@
 <template>
     <Wrapper :color="'primary'">
-        <Sheet :color="'light'" :height="'85'">
-            <div class="px-2 pt-2 text-center">
+        <Sheet v-if="this.cards.length > 0" :color="'light'" :height="'85'">
+            <div  class="px-2 pt-2 text-center">
                 <h2 class="text-muted fw-500">{{ this.index + 1 }} / {{ this.cards.length }}</h2>
-                <Card :card="cards[index]" @next="next"/>
+                <Card :card="this.cards[index]" @next="next"/>
             </div>
+
         </Sheet>
+        <ModalSheet v-else
+            :height="'80'"
+            :backdrop="'none'"
+        >
+            <div class="container">
+                <h1 class="fs-48">🤡</h1>
+                <h2 class="fs-32">Oops...</h2>
+                <p>Aucune carte n'est disponible pour ce thème. Des cartes peuvent être ajoutées dans le menu <span class="highlight" @click="this.$router.push(`/settings`)">Options</span>.</p>
+                <button
+                    class="btn mt-5"
+                    @click="this.$router.push(`/`)"
+                >
+                    Retour
+                </button>
+            </div>
+        </ModalSheet>
 
         <ModalSheet 
             :height="'60'"
@@ -41,8 +58,8 @@ export default {
             cards: data.cards,
             index: 0,
             showModal: false,
-            category: '',
-            theme: ''
+            category: {},
+            theme: {}
         }
     },
     mounted() {
@@ -53,15 +70,16 @@ export default {
             cards = localStorage.getItem('flashcards_cards');
         }
         this.cards = JSON.parse(cards).filter(card => card.theme_id === this.$route.params.themeId);
+        console.log("CARDS : ", this.cards)
 
         // SET CURRENT THEME NAME
-        const themeId = this.cards[0].theme_id;
+        const themeId = this.cards[0]?.theme_id;
         const themes = localStorage.getItem('flashcards_themes');
         const theme = JSON.parse(themes).filter(theme => theme.id === themeId)[0];
         this.theme = theme;
 
         // SET CURRENT CATEGORY NAME
-        const categoryId = theme.category_id;
+        const categoryId = theme?.category_id;
         const categories = localStorage.getItem('flashcards_categories');
         const category = JSON.parse(categories).filter(cat => cat.id === categoryId)[0];
         this.category = category;
@@ -70,12 +88,11 @@ export default {
         next: function() {
             setTimeout(() => {
                 if(this.index < this.cards.length - 1) {
-                    this.index = this.index + 1;
+                    this.index = this.index + 1; // Passe à la carte suivante
                 } else {
-                    this.showModal = true;
+                    this.showModal = true; // Affiche la modal de success
                 }
-                }, "300");
-
+            }, "300");
         }
     },
     computed:{
@@ -119,6 +136,13 @@ input:focus {
 button {
     background-color: #4F42D8;
     color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.highlight {
+    color: #4F42D8;
+    font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
 }

@@ -24,6 +24,9 @@
 export default {
     name: 'Card',
     props: ["card"],
+    // props: {
+    //     card: {type: Object, required:true, }
+    // },
     methods: {
         toggleClass: function(e) {
             let target = e.target;
@@ -32,11 +35,17 @@ export default {
             }
             target.classList.toggle('is-flipped');
         },
-        validate: function(isValid) {
+        validate: function(isCorrect) {
             this.$emit('next');
-            console.log(isValid);
-        }
+            if(isCorrect) {
+                console.log(this.card.answer)
+            } else {
 
+            };
+        }
+    },
+    mounted() {
+        console.log(this.card);
     },
     components: {
     
