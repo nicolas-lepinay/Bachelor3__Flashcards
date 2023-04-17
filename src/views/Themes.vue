@@ -3,7 +3,7 @@
         <Sheet :color="'light'" :height="'85'">
             <div class="px-2 pt-3">
                 <h2 class="primary fw-600">Plus précisement...</h2>
-                <SquareList :items="themes" class="pt-2"></SquareList>
+                <SquareList :items="themes" @choose="handler" class="pt-2"></SquareList>
             </div>
             <button class="add-btn" @click="showModal = true">+</button>
         </Sheet>
@@ -57,7 +57,10 @@ export default {
     methods: {
         addTheme: function() {
             this.showModal = false;
-        }
+        },
+        handler(themeId) {
+            this.$router.push(`/${this.$route.params.categoryId}/${themeId}`) // ROUTER.PUSH MAIS ROUTE.PARAMS (SANS R)
+        },
     },
     components: {
         Wrapper,

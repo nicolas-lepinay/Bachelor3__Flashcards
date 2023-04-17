@@ -4,6 +4,7 @@
             v-for="item in items" 
             v-bind:key="item.id" 
             class="square-wrapper"
+            @click="go(item.id)"
         >
             <div class="square-btn">
                 <img :src="require(`../assets/icons/${item.icon}`)" />
@@ -20,6 +21,11 @@ import Spacer from './Spacer.vue';
 export default {
     name: 'SquareList',
     props: ["items"],
+    methods: {
+        go: function(itemId) {
+            this.$emit('choose', itemId)
+        }
+    },
     components: {
         Spacer
     }

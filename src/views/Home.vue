@@ -3,7 +3,7 @@
         <Sheet :color="'light'" :height="'85'">
             <div class="px-2 pt-3">
                 <h2 class="primary fw-600">Je veux réviser...</h2>
-                <SquareList :items="categories" class="pt-2" ></SquareList>
+                <SquareList :items="categories" @choose="handler" class="pt-2" ></SquareList>
             </div>
             <button class="add-btn" @click="showModal = true">+</button>
         </Sheet>
@@ -57,6 +57,9 @@ export default {
     methods: {
         addCategory: function() {
             this.showModal = false;
+        },
+        handler(categoryId) {
+            this.$router.push(`/${categoryId}`)
         }
     },
     components: {
