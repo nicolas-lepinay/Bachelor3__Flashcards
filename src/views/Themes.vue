@@ -2,8 +2,8 @@
     <Wrapper :color="'primary'" >
         <Sheet :color="'light'" :height="'85'">
             <div class="px-2 pt-3">
-                <h2 class="primary fw-600">Je veux réviser...</h2>
-                <SquareList :items="categories" class="pt-2" ></SquareList>
+                <h2 class="primary fw-600">Plus précisement...</h2>
+                <SquareList :items="themes" class="pt-2"></SquareList>
             </div>
             <button class="add-btn" @click="showModal = true">+</button>
         </Sheet>
@@ -13,14 +13,14 @@
             v-if="showModal" 
             @close="showModal = false"
         >
-            <p class="fs-19 fw-800">Ajouter une catégorie</p>
+            <p class="fs-19 fw-800">Ajouter un thème</p>
 
-            <input v-model="category_name" placeholder="Nom de la catégorie" class="my-1" />
+            <input v-model="theme_name" placeholder="Nom du thème" class="my-1" />
 
             <button 
                 class="btn my-2" 
-                :class="{ inactive: this.category_name === ''}"
-                @click="addCategory"
+                :class="{ inactive: this.theme_name === ''}"
+                @click="addTheme"
             >
                 Confirmer
             </button>
@@ -38,24 +38,24 @@ import ModalSheet from '../components/ModalSheet.vue';
 import data from '../data/data.json'
 
 export default {
-    name: 'Home',
+    name: 'Themes',
     data() {
         return {
-            categories: data.categories,
+            themes: data.themes,
             showModal: false,
-            category_name: ''
+            theme_name: ''
         }
     },
     mounted() {
-        let categories = localStorage.getItem('flashcards_categories');
-        if(!categories) {
-            localStorage.setItem('flashcards_categories', JSON.stringify(this.categories));
-            categories = localStorage.getItem('flashcards_categories');
+        let themes = localStorage.getItem('flashcards_themes');
+        if(!themes) {
+            localStorage.setItem('flashcards_themes', JSON.stringify(this.themes));
+            themes = localStorage.getItem('flashcards_themes');
         }
-        this.categories = categories;
+        this.themes = themes;
     },
     methods: {
-        addCategory: function() {
+        addTheme: function() {
             this.showModal = false;
         }
     },

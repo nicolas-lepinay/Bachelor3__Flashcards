@@ -20,5 +20,31 @@
             "name": "Géographie",
             "icon": "globe.png"
         }
+    ],
+    "themes": [
+        {
+            "id": "11",
+            "category_id": "1",
+            "name": "Seconde Guerre Mondiale",
+            "icon": "star.png"
+        },
+        {
+            "id": "22",
+            "category_id": "2",
+            "name": "Vocabulaire",
+            "icon": "star.png"
+        },
+        {
+            "id": "33",
+            "category_id": "3",
+            "name": "Culture européenne",
+            "icon": "star.png"
+        },
+        {
+            "id": "44",
+            "category_id": "4",
+            "name": "Europe",
+            "icon": "star.png"
+        }
     ]
 }
