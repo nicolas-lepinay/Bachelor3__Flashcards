@@ -4,8 +4,7 @@ const routes = [
     { path: '/', component: () => import('../views/Home.vue') },
     { path: '/:categoryId', component: () => import('../views/Themes.vue') },
     { path: '/:categoryId/:themeId', component: () => import('../views/Cards.vue') },
-//  { path: '/sign-up', component: () => import('../views/SignUp.vue') },
-//  { path: '/login', component: () => import('../views/Login.vue') },
+    { path: '/settings', component: () => import('../views/Settings.vue') },
 ]
 
 const router = createRouter({

@@ -52,7 +52,7 @@ export default {
             localStorage.setItem('flashcards_themes', JSON.stringify(this.themes));
             themes = localStorage.getItem('flashcards_themes');
         }
-        this.themes = themes;
+        this.themes = JSON.parse(themes).filter(theme => theme.category_id === this.$route.params.categoryId);
     },
     methods: {
         addTheme: function() {

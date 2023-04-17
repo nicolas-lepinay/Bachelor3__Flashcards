@@ -9,12 +9,21 @@ $spacer: 16px;
     justify-content: center;
 }
 
+.jcsb {
+    justify-content: space-between;
+}
+
+
 .aic {
     align-items: center;
 }
 
 .col {
     flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
 }
 
 @mixin gap($i) {
@@ -56,6 +65,15 @@ $spacer: 16px;
 @for $i from 0 through 10 {
     .my-#{$i} { 
         @include margin-y($i); 
+    }
+}
+
+@mixin margin-top($i) {
+    margin-top: $spacer * $i;
+}
+@for $i from 0 through 10 {
+    .mt-#{$i} { 
+        @include margin-top($i); 
     }
 }
 

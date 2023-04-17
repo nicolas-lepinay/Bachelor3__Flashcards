@@ -52,7 +52,7 @@ export default {
             localStorage.setItem('flashcards_categories', JSON.stringify(this.categories));
             categories = localStorage.getItem('flashcards_categories');
         }
-        this.categories = categories;
+        this.categories = JSON.parse(categories);
     },
     methods: {
         addCategory: function() {

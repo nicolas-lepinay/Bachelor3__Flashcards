@@ -26,25 +26,45 @@
             "id": "11",
             "category_id": "1",
             "name": "Seconde Guerre Mondiale",
-            "icon": "star.png"
+            "icon": "paratrooper.png"
         },
         {
             "id": "22",
             "category_id": "2",
             "name": "Vocabulaire",
-            "icon": "star.png"
+            "icon": "dictionary.png"
         },
         {
             "id": "33",
             "category_id": "3",
             "name": "Culture européenne",
-            "icon": "star.png"
+            "icon": "euro-union.png"
         },
         {
             "id": "44",
             "category_id": "4",
             "name": "Europe",
-            "icon": "star.png"
+            "icon": "europe.png"
+        }
+    ],
+    "cards": [
+        {
+            "id": "11_1",
+            "theme_id": "11",
+            "question": "En quelle année a débuté la Seconde Guerre Mondiale ?",
+            "answer": "1939",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
+        },
+        {
+            "id": "11_2",
+            "theme_id": "11",
+            "question": "Quel est le nom de l'opération militaire ayant conduit à l'invasion de l'URSS par le IIIème Reich ?",
+            "answer": "Opération Barbarossa",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
         }
     ]
 }
