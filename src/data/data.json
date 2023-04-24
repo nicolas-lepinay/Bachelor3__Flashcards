@@ -19,6 +19,11 @@
             "id": "4",
             "name": "Géographie",
             "icon": "globe.png"
+        },
+        {
+            "id": "5",
+            "name": "Test",
+            "icon": "star.png"
         }
     ],
     "themes": [
