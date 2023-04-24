@@ -1,5 +1,5 @@
 <template>
-    <div class="container d-flex g-2">
+    <div class="list-container d-flex g-2">
         <div 
             v-for="item in items" 
             v-bind:key="item.id" 
@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.container {
+.list-container {
     max-height: 500px;
     overflow-x: hidden;
     overflow-y: auto;

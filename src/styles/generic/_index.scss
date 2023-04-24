@@ -29,6 +29,10 @@ $spacer: 16px;
     position: relative;
 }
 
+.d-none {
+    display: none;
+}
+
 @mixin gap($i) {
     gap: $spacer * $i;
 }

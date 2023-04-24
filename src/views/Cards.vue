@@ -184,11 +184,4 @@ input:focus {
     min-width: 178px;
 }
 
-.highlight {
-    color: #4F42D8;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
 </style>
