@@ -1,12 +1,14 @@
 <template>
     <Wrapper :color="'primary'">
         <Sheet v-if="this.cards.length > 0" :color="'light'" :height="'85'">
-            <div  class="px-2 pt-2 text-center">
+            <div class="px-2 pt-2 text-center pos-relative">
+                <button v-if="this.cards.length > 0" class="add-btn add-btn__top" @click="showNewCardModal = true">+ Ajouter</button>
                 <h2 class="text-muted fw-500">{{ this.index + 1 }} / {{ this.cards.length }}</h2>
                 <Card :card="this.cards[index]" @next="next"/>
             </div>
-
         </Sheet>
+        
+        <!-- 🚫 AUCUNE CARTE DISPONIBLE -->
         <ModalSheet v-else
             :height="'80'"
             :backdrop="'none'"
@@ -31,6 +33,7 @@
             </div>
         </ModalSheet>
 
+        <!-- ➕ AJOUTER UNE NOUVELLE CARTE -->
         <ModalSheet 
             :height="'45'"
             v-if="showNewCardModal" 
@@ -50,6 +53,7 @@
             </button>
         </ModalSheet>
 
+        <!-- 🎉 ÉCRAN DE FÉLICITATIONS -->
         <ModalSheet 
             :height="'60'"
             v-if="showModal" 
@@ -164,14 +168,14 @@ input:focus {
     text-align: center;
 }
 
-button {
+.btn {
     background-color: #4F42D8;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-button.btn-secondary {
+.btn-secondary {
     background-color: transparent;
     border: 3px solid #4F42D8;
     color: #4F42D8;
@@ -179,7 +183,6 @@ button.btn-secondary {
     text-transform: uppercase;
     min-width: 178px;
 }
-
 
 .highlight {
     color: #4F42D8;
