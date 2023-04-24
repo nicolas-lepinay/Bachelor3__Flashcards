@@ -24,9 +24,6 @@
 export default {
     name: 'Card',
     props: ["card"],
-    // props: {
-    //     card: {type: Object, required:true, }
-    // },
     methods: {
         toggleClass: function(e) {
             let target = e.target;
@@ -44,12 +41,6 @@ export default {
             };
         }
     },
-    mounted() {
-        console.log(this.card);
-    },
-    components: {
-    
-    }
 }
 </script>
 
