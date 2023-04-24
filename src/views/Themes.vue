@@ -56,11 +56,33 @@ export default {
     },
     methods: {
         addTheme: function() {
+            this.appendTheme();
+            let themes = localStorage.getItem('flashcards_themes');
+            this.themes = JSON.parse(themes).filter(theme => theme.category_id === this.$route.params.categoryId);
+            this.theme_name = "";
             this.showModal = false;
         },
         handler(themeId) {
             this.$router.push(`/${this.$route.params.categoryId}/${themeId}`) // ROUTER.PUSH MAIS ROUTE.PARAMS (SANS R)
         },
+        appendTheme() {
+            let themes = localStorage.getItem('flashcards_themes');
+            this.themes = JSON.parse(themes);
+            themes = JSON.parse(themes);
+            let newTheme = {
+                "id": `${Date.now()}`,
+                "category_id": `${this.$route.params.categoryId}`,
+                "name": this.theme_name,
+                "icon": "star.png"
+            }
+            for (const item of themes)
+                if(newTheme.id <= parseInt(item.id))
+                    newTheme.id = parseInt(item.id) + 1;
+                    
+            themes.push(newTheme);
+            let json = JSON.stringify(themes);
+            localStorage.setItem('flashcards_themes', json);
+        }
     },
     components: {
         Wrapper,

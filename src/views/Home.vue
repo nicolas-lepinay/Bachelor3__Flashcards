@@ -56,10 +56,30 @@ export default {
     },
     methods: {
         addCategory: function() {
+            this.appendCategory();
+            this.categories = JSON.parse(localStorage.getItem('flashcards_categories'));
+            this.category_name = "";
             this.showModal = false;
         },
         handler(categoryId) {
             this.$router.push(`/${categoryId}`)
+        },
+        appendCategory() {
+            let categories = localStorage.getItem('flashcards_categories');
+            this.categories = JSON.parse(categories);
+            categories = JSON.parse(categories);
+            let newCategory = {
+                "id": `${Date.now()}`,
+                "name": this.category_name,
+                "icon": "star.png"
+            }
+            for (const item of categories)
+                if(newCategory.id <= parseInt(item.id))
+                    newCategory.id = parseInt(item.id) + 1;
+                    
+            categories.push(newCategory);
+            let json = JSON.stringify(categories);
+            localStorage.setItem('flashcards_categories', json);
         }
     },
     components: {
@@ -74,23 +94,23 @@ export default {
 
 <style lang="scss" scoped>
 
-input {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    outline: none;
-    padding: 5px 20px 5px 0;
-    width: 85%;
-}
-input:focus {
-    border-bottom: 2px solid #4F42D8;
-}
+    input {
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+        outline: none;
+        padding: 5px 20px 5px 0;
+        width: 85%;
+    }
+    input:focus {
+        border-bottom: 2px solid #4F42D8;
+    }
 
-button {
-    background-color: #4F42D8;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-}
+    button {
+        background-color: #4F42D8;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 </style>
