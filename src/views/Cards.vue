@@ -14,14 +14,40 @@
             <div class="container">
                 <h1 class="fs-48">🤡</h1>
                 <h2 class="fs-32">Oops...</h2>
-                <p>Aucune carte n'est disponible pour ce thème. Des cartes peuvent être ajoutées dans le menu <span class="highlight" @click="this.$router.push(`/settings`)">Options</span>.</p>
+                <p>Aucune carte n'est disponible pour ce thème. Des cartes peuvent être ajoutées dans le menu <span class="highlight" @click="this.$router.push(`/settings`)">Options</span> ou en cliquant sur le bouton ci-dessous.</p>
                 <button
-                    class="btn mt-5"
+                    class="btn mt-4"
+                    @click="showNewCardModal = true"
+                >
+                    Ajouter une carte
+                </button>
+
+                <button
+                    class="btn btn-secondary mt-2"
                     @click="this.$router.push(`/`)"
                 >
                     Retour
                 </button>
             </div>
+        </ModalSheet>
+
+        <ModalSheet 
+            :height="'45'"
+            v-if="showNewCardModal" 
+            @close="showNewCardModal = false"
+        >
+            <p class="fs-19 fw-800">Ajouter une carte</p>
+
+            <input v-model="card_question" placeholder="Insérer la question..." class="my-1" />
+            <input v-model="card_answer" placeholder="Insérer la réponse..." class="my-1" />
+
+            <button 
+                class="btn my-2" 
+                :class="{ inactive: this.card_question === '' || this.card_answer === '' }"
+                @click="addCard"
+            >
+                Confirmer
+            </button>
         </ModalSheet>
 
         <ModalSheet 
@@ -58,6 +84,9 @@ export default {
             cards: data.cards,
             index: 0,
             showModal: false,
+            showNewCardModal: false,
+            card_question: '',
+            card_answer: '',
             category: {},
             theme: {}
         }
@@ -70,7 +99,6 @@ export default {
             cards = localStorage.getItem('flashcards_cards');
         }
         this.cards = JSON.parse(cards).filter(card => card.theme_id === this.$route.params.themeId);
-        console.log("CARDS : ", this.cards)
 
         // SET CURRENT THEME NAME
         const themeId = this.cards[0]?.theme_id;
@@ -93,6 +121,9 @@ export default {
                     this.showModal = true; // Affiche la modal de success
                 }
             }, "300");
+        },
+        addCard: function() {
+            this.showNewCardModal = false;
         }
     },
     computed:{
@@ -139,6 +170,16 @@ button {
     font-weight: bold;
     text-transform: uppercase;
 }
+
+button.btn-secondary {
+    background-color: transparent;
+    border: 3px solid #4F42D8;
+    color: #4F42D8;
+    font-weight: bold;
+    text-transform: uppercase;
+    min-width: 178px;
+}
+
 
 .highlight {
     color: #4F42D8;

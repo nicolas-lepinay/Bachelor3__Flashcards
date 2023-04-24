@@ -29,10 +29,22 @@
             "icon": "paratrooper.png"
         },
         {
+            "id": "12",
+            "category_id": "1",
+            "name": "XIXème siècle",
+            "icon": "horse.png"
+        },
+        {
             "id": "22",
             "category_id": "2",
             "name": "Vocabulaire",
             "icon": "dictionary.png"
+        },
+        {
+            "id": "23",
+            "category_id": "2",
+            "name": "Grammaire",
+            "icon": "eng.png"
         },
         {
             "id": "33",
@@ -62,6 +74,42 @@
             "theme_id": "11",
             "question": "Quel est le nom de l'opération militaire ayant conduit à l'invasion de l'URSS par le IIIème Reich ?",
             "answer": "Opération Barbarossa",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
+        },
+        {
+            "id": "12_1",
+            "theme_id": "12",
+            "question": "En quelle année a eu lieu la bataille de Waterloo ?",
+            "answer": "1815",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
+        },
+        {
+            "id": "12_2",
+            "theme_id": "12",
+            "question": "Quel est le nom de l'égyptologue français ayant déchiffré les hiéroglyphes grâce à la pierre de Rosette ?",
+            "answer": "Jean-François Champollion",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
+        },
+        {
+            "id": "12_3",
+            "theme_id": "12",
+            "question": "À quelle occasion et en quelle année la Tour Eiffel a-t-elle été construite ?",
+            "answer": "L'exposition universelle de 1899",
+            "date": "",
+            "level": -1,
+            "image": "X.png"
+        },
+        {
+            "id": "22_1",
+            "theme_id": "22",
+            "question": "ENG",
+            "answer": "ENG",
             "date": "",
             "level": -1,
             "image": "X.png"

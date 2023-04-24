@@ -35,9 +35,10 @@ export default {
         validate: function(isCorrect) {
             this.$emit('next');
             if(isCorrect) {
-                console.log(this.card.answer)
+                // SET LEVEL UP
+                console.log(this.card.answer);
             } else {
-
+                // SET LEVEL TO 0
             };
         }
     },
