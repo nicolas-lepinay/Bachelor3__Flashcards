@@ -123,7 +123,36 @@ export default {
             }, "300");
         },
         addCard: function() {
+            let themeId = this.$route.params.themeId;
+            this.appendCard(themeId);
+            this.card_question = "";
+            this.card_answer = "";
+
+            let cards = localStorage.getItem('flashcards_cards');
+            this.cards = JSON.parse(cards).filter(card => card.theme_id === this.$route.params.themeId);
             this.showNewCardModal = false;
+        },
+        appendCard(themeId){
+            let newCard = {
+                "id": `${Date.now()}`,
+                "theme_id": `${themeId}`,
+                "question": this.card_question,
+                "answer": this.card_answer,
+                "date": "",
+                "level": -1,
+                "image": "X.png"
+            }
+            
+            let cards = localStorage.getItem('flashcards_cards');
+            this.cards = JSON.parse(cards);
+            cards = JSON.parse(cards);
+            for (const item of cards)
+                if(newCard.id <= parseInt(item.id))
+                    newCard.id = parseInt(item.id) + 1;
+                    
+            cards.push(newCard);
+            let json = JSON.stringify(cards);
+            localStorage.setItem('flashcards_cards', json);
         }
     },
     computed:{
