@@ -1,0 +1,109 @@
+<template>
+    <div class="list-container">
+        <div 
+            v-for="item in items" 
+            v-bind:key="item.id" 
+            @click="go(item.id)">
+            <img v-if="item.icon" :src="require(`../assets/icons/${item.icon}`)"/>
+            <p>{{ item.name ? item.name : item.question }}</p>
+            <div class="actions">
+                <button class="action-btn" @click="showModal = true">🖉</button>
+                <button class="action-btn del" @click="showModal = true">🗑️</button>
+            </div>
+        </div>
+    </div>
+    
+    <!--  -->
+</template>
+
+<script>
+
+export default {
+    name: 'GestionList',
+    props: ["baseItems"],
+    methods: {
+        go: function(itemId) {
+            this.$emit('choose', itemId)
+        }
+    },
+    computed: {
+        items(){
+            let str_length = 21;
+            let tab = this.baseItems.map((item) => {
+                if(!item.icon) str_length = 30;
+                if(item.name){
+                    if(item.name.length <= str_length) return item;
+                    item.name = `${item.name.substring(0,str_length-3)}...`;
+                }else{
+                    if(item.question.length <= str_length) return item;
+                    item.question = `${item.question.substring(0,str_length-3)}...`;
+                }
+                return item;
+            })
+            return tab
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+    .list-container{
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        // background-color: blue;
+        gap: 15px;
+    }
+    .list-container > * {
+        width: 100%;
+        background-color: red;
+        height: 75px;
+        background-color: rgba(240,240,240, 1); // Default color
+        border-radius: 15px;
+        margin: 0;
+        width: 100%;
+        white-space: normal; 
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0.5rem
+    }
+    .list-container p{
+        width: 100%;
+        padding: 0 10px;
+        font-family: monospace;
+    }
+
+    img{
+        height: 60px;
+        width: 60px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .actions{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    .action-btn {
+        background: linear-gradient(to top, #ceff08 0%, #ffdd99 100%);
+        border: none;
+        border-radius: 100px;
+        color: ivory;
+        cursor: pointer;
+        font-size: 1.5rem;
+        font-weight: bold;
+        height: 40px;
+        width: 40px;
+        outline: none;
+        text-transform: uppercase;
+        z-index: 1;
+    }
+    .action-btn.del {
+        background: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    }
+</style>

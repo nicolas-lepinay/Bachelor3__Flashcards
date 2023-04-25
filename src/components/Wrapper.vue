@@ -10,8 +10,8 @@
                 <p class="fw-900">Accueil</p>
             </div>
 
-            <div class="d-flex aic" @click="this.$router.push('/settings')">
-                <p class="fw-900">Options</p>
+            <div class="d-flex aic" @click="this.goToSettings()">
+                <p class="fw-900">Gestion</p>
                 <img class="ml-1" src="../assets/icons/setting.png"/>
             </div>
         </div>
@@ -22,6 +22,16 @@
 <script>
 export default {
     name: 'Wrapper',
+    methods: {
+        goToSettings(){
+            this.$router.push('/settings')  
+            if(this.$route.path.indexOf("settings") != -1){
+                setTimeout(() => {
+                    location.reload();
+                }, 100);
+            }
+        }
+    }
 }
 </script>
 
