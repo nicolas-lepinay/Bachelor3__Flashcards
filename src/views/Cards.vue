@@ -4,7 +4,7 @@
             <div class="px-2 pt-2 text-center pos-relative">
                 <button v-if="this.cards.length > 0" class="add-btn add-btn__top" @click="showNewCardModal = true">+ Ajouter</button>
                 <h2 class="text-muted fw-500">{{ this.index + 1 }} / {{ this.cards.length }}</h2>
-                <Card :card="this.cards[index]" @next="next"/>
+                <Card :card="this.cards[index]" @changeLevel="changeLevel"/>
             </div>
         </Sheet>
         
@@ -131,9 +131,6 @@ export default {
             this.appendCard(themeId);
             this.card_question = "";
             this.card_answer = "";
-
-            let cards = localStorage.getItem('flashcards_cards');
-            this.cards = JSON.parse(cards).filter(card => card.theme_id === this.$route.params.themeId);
             this.showNewCardModal = false;
         },
         appendCard(themeId){
@@ -155,8 +152,31 @@ export default {
                     newCard.id = parseInt(item.id) + 1;
                     
             cards.push(newCard);
+            console.log(cards);
+
+            this.cards = cards.filter(card => card.theme_id === this.$route.params.themeId);
             let json = JSON.stringify(cards);
             localStorage.setItem('flashcards_cards', json);
+        },
+        changeLevel(validate){
+            console.log(this.cards.length);
+            let baseCards = JSON.parse(localStorage.getItem('flashcards_cards'));
+            let actualCard = baseCards.find(card => card.id == this.cards[this.index].id)
+            let index = baseCards.indexOf(actualCard);
+
+            if(validate){
+                if(baseCards[index].level == -1)
+                    baseCards[index].level = 1
+                else
+                    baseCards[index].level = baseCards[index].level + 1;
+            }else{
+                baseCards[index].level = 0;
+            }
+            baseCards[index].date = `${Date.now()}`;
+            
+            let json = JSON.stringify(baseCards);
+            localStorage.setItem('flashcards_cards', json);
+            this.next();
         }
     },
     computed:{
@@ -178,39 +198,39 @@ export default {
 
 <style lang="scss" scoped>
 
-input {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    outline: none;
-    padding: 5px 20px 5px 0;
-    width: 85%;
-}
-input:focus {
-    border-bottom: 2px solid #4F42D8;
-}
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
+    input {
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+        outline: none;
+        padding: 5px 20px 5px 0;
+        width: 85%;
+    }
+    input:focus {
+        border-bottom: 2px solid #4F42D8;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 
-.btn {
-    background-color: #4F42D8;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-}
+    .btn {
+        background-color: #4F42D8;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
-.btn-secondary {
-    background-color: transparent;
-    border: 3px solid #4F42D8;
-    color: #4F42D8;
-    font-weight: bold;
-    text-transform: uppercase;
-    min-width: 178px;
-}
+    .btn-secondary {
+        background-color: transparent;
+        border: 3px solid #4F42D8;
+        color: #4F42D8;
+        font-weight: bold;
+        text-transform: uppercase;
+        min-width: 178px;
+    }
 
 </style>
