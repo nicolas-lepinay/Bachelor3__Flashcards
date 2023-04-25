@@ -39,6 +39,7 @@ export default {
     width: 100%;
     white-space: normal; 
     animation: slide-up 0.4s;
+    z-index: 100;
 }
 
 .backdrop {
@@ -52,6 +53,7 @@ export default {
     position: absolute;
     top: 0;
     width: 400px;
+    z-index: 99;
 }
 
 .wrapper {

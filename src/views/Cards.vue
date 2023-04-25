@@ -9,7 +9,7 @@
         </Sheet>
         
         <!-- 🚫 AUCUNE CARTE DISPONIBLE -->
-        <ModalSheet v-else
+        <ModalSheet v-if="this.cards.length == 0 && !showAllClearModal"
             :height="'80'"
             :backdrop="'none'"
         >
@@ -70,6 +70,23 @@
                 </button>
             </div>
         </ModalSheet>
+
+        <!-- ÉCRAN DE DÉJA RÉVISÉ -->
+        <ModalSheet 
+            :height="'80'"
+            v-if="showAllClearModal" 
+        >
+            <div class="container">
+                <h2 class="fs-32">C'est fini !</h2>
+                <p>Vous n'avez plus de révision de prévues aujourd'hui pour le thème {{ this.theme.name }}</p>
+                <button
+                    class="btn mt-3"
+                    @click="this.$router.push(`/`)"
+                >
+                    Retour
+                </button>
+            </div>
+        </ModalSheet>
     </Wrapper>
 </template>
 
@@ -89,6 +106,7 @@ export default {
             index: 0,
             showModal: false,
             showNewCardModal: false,
+            showAllClearModal: false,
             card_question: '',
             card_answer: '',
             category: {},
@@ -102,16 +120,34 @@ export default {
             localStorage.setItem('flashcards_cards', JSON.stringify(this.cards));
             cards = localStorage.getItem('flashcards_cards');
         }
-        this.cards = JSON.parse(cards).filter(card => card.theme_id === this.$route.params.themeId);
+
+        let finished = false;
+        this.cards = JSON.parse(cards).filter((card) => {
+            if(card.theme_id !== this.$route.params.themeId) return false;
+
+            let today = new Date().setHours(0, 0, 0, 0);
+            let date = new Date(card.date).setHours(0, 0, 0, 0);
+            let days = parseInt(card.level);
+
+            if(days == -1){
+                return true;
+            }else if(date + days + 1 >= today){
+                return true;
+            }else {
+                finished = true;
+                return false;
+            }
+        });
+        this.showAllClearModal = finished;
 
         // SET CURRENT THEME NAME
-        const themeId = this.cards[0]?.theme_id;
+        let themeId = this.$route.params.themeId;
         const themes = localStorage.getItem('flashcards_themes');
         const theme = JSON.parse(themes).filter(theme => theme.id === themeId)[0];
         this.theme = theme;
 
         // SET CURRENT CATEGORY NAME
-        const categoryId = theme?.category_id;
+        let categoryId = this.$route.params.categoryId;
         const categories = localStorage.getItem('flashcards_categories');
         const category = JSON.parse(categories).filter(cat => cat.id === categoryId)[0];
         this.category = category;
@@ -159,7 +195,6 @@ export default {
             localStorage.setItem('flashcards_cards', json);
         },
         changeLevel(validate){
-            console.log(this.cards.length);
             let baseCards = JSON.parse(localStorage.getItem('flashcards_cards'));
             let actualCard = baseCards.find(card => card.id == this.cards[this.index].id)
             let index = baseCards.indexOf(actualCard);
