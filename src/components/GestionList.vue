@@ -7,8 +7,8 @@
             <img v-if="item.icon" :src="require(`../assets/icons/${item.icon}`)"/>
             <p>{{ item.name ? item.name : item.question }}</p>
             <div class="actions">
-                <button class="action-btn" @click="showModal = true">🖉</button>
-                <button class="action-btn del" @click="showModal = true">🗑️</button>
+                <button class="action-btn" @click="action($event, item.id)">🖉</button>
+                <button class="action-btn del" @click="action($event, item.id)">🗑️</button>
             </div>
         </div>
     </div>
@@ -21,23 +21,31 @@
 export default {
     name: 'GestionList',
     props: ["baseItems"],
+    data() {
+        return {
+            actionState: false
+        }
+    },
     methods: {
         go: function(itemId) {
-            this.$emit('choose', itemId)
+            if(this.actionState) return;
+            let categoryId = this.$route.params.categoryId;
+            let themeId = this.$route.params.themeId;
+            if(!categoryId || !themeId)
+                this.$emit('choose', itemId)
+        },
+        action(ev, id) {
+            this.actionState = true
+            ev.preventDefault();
+            this.$emit('toEdit', !ev.target.classList.contains("del"), id)
+            setTimeout(() => {
+                this.actionState = false
+            }, 250);
         }
     },
     computed: {
         items(){
-            let str_length = 21;
             let tab = this.baseItems.map((item) => {
-                if(!item.icon) str_length = 30;
-                if(item.name){
-                    if(item.name.length <= str_length) return item;
-                    item.name = `${item.name.substring(0,str_length-3)}...`;
-                }else{
-                    if(item.question.length <= str_length) return item;
-                    item.question = `${item.question.substring(0,str_length-3)}...`;
-                }
                 return item;
             })
             return tab
@@ -74,6 +82,9 @@ export default {
         width: 100%;
         padding: 0 10px;
         font-family: monospace;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: "...";
     }
 
     img{
