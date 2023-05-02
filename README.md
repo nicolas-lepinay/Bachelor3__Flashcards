@@ -1,7 +1,7 @@
 # 𝐅𝐥𝐚𝐬𝐡𝐜𝐚𝐫𝐝𝐬 
 
 📱 Une application web de cartes de révision :\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• affichage des cartes en fonction du taux de réussite,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• affichage des cartes en fonction du taux de réussite,\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ajout, modification et suppression de catégories, de thèmes et de cartes.
 
 ⚙️ Développée avec 𝐕𝐮𝐞.𝐣𝐬
