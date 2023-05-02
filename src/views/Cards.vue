@@ -77,8 +77,9 @@
             v-if="showAllClearModal" 
         >
             <div class="container">
+                <h1 class="fs-48">⏱️</h1>
                 <h2 class="fs-32">C'est fini !</h2>
-                <p>Vous n'avez plus de révision de prévues aujourd'hui pour le thème {{ this.theme.name }}</p>
+                <p>Vous n'avez plus de révisions prévues aujourd'hui pour le thème <strong>{{ this.theme.name }}</strong>.</p>
                 <button
                     class="btn mt-3"
                     @click="this.$router.push(`/`)"
