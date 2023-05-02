@@ -4,11 +4,15 @@
             v-for="item in items" 
             v-bind:key="item.id" 
             @click="go(item.id)">
-            <img v-if="item.icon" :src="require(`../assets/icons/${item.icon}`)"/>
+            <img class="item-icon" v-if="item.icon" :src="require(`../assets/icons/${item.icon}`)"/>
             <p>{{ item.name ? item.name : item.question }}</p>
             <div class="actions">
-                <button class="action-btn" @click="action($event, item.id)">🖉</button>
-                <button class="action-btn del" @click="action($event, item.id)">🗑️</button>
+                <button class="action-btn mr-1" @click="action($event, item.id)">
+                    <img src="../assets/icons/edit.png"/>
+                </button>
+                <button class="action-btn del" @click="action($event, item.id)">
+                    <img class="del" src="../assets/icons/trash.png"/>
+                </button>
             </div>
         </div>
     </div>
@@ -64,9 +68,8 @@ export default {
     }
     .list-container > * {
         width: 100%;
-        background-color: red;
         height: 75px;
-        background-color: rgba(240,240,240, 1); // Default color
+        background-color: rgba(245, 245, 245, 1); // Default color
         border-radius: 15px;
         margin: 0;
         width: 100%;
@@ -78,30 +81,36 @@ export default {
         align-items: center;
         padding: 0 0.5rem
     }
-    .list-container p{
+    .list-container p {
         width: 100%;
-        padding: 0 10px;
-        font-family: monospace;
+        padding: 0 20px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: "...";
     }
 
-    img{
-        height: 60px;
-        width: 60px;
+    .item-icon {
+        height: 40px;
+        width: 40px;
         padding: 0;
         margin: 0;
     }
+
+    button > img {
+        height: 20px;
+        opacity: 0.6;
+        width: 20px;
+    }
     
-    .actions{
+    .actions {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 10px;
     }
     .action-btn {
-        background: linear-gradient(to top, #ceff08 0%, #ffdd99 100%);
+        /* background: linear-gradient(to top, #ceff08 0%, #ffdd99 100%); */
+        background: transparent;
         border: none;
         border-radius: 100px;
         color: ivory;
@@ -115,6 +124,6 @@ export default {
         z-index: 1;
     }
     .action-btn.del {
-        background: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+        /* background: linear-gradient(to top, #ff0844 0%, #ffb199 100%); */
     }
 </style>
