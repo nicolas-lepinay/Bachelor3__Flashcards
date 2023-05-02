@@ -7,7 +7,7 @@
 ⚙️ Développée avec 𝐕𝐮𝐞.𝐣𝐬
 
 👉 Contributeurs : Nicolas Lépinay, Cyprien Siaud.
-\
+
 
 ![Home](https://user-images.githubusercontent.com/87578863/235714345-a262b68f-27f6-4b6a-8acb-046642ef9468.PNG)
 ![flashcards gif](https://user-images.githubusercontent.com/87578863/235714359-1609366b-fd30-4b0c-94bc-912432bfe131.gif)
