@@ -1,6 +1,6 @@
 <template>
     <Wrapper :color="'primary'" >
-        <Sheet :color="'light'" :height="'85'">
+        <Sheet v-if="this.themes.length > 0" :color="'light'" :height="'85'">
             <div class="px-2 pt-3">
                 <h2 class="primary fw-600">Plus précisement...</h2>
                 <SquareList :items="themes" @choose="handler" class="pt-2"></SquareList>
@@ -8,6 +8,32 @@
             <button class="add-btn" @click="showModal = true">+</button>
         </Sheet>
 
+        <!-- 🚫 AUCUN THÈME DISPONIBLE -->
+        <ModalSheet v-else
+            :height="'80'"
+            :backdrop="'none'"
+        >
+            <div class="container">
+                <h1 class="fs-48">🤡</h1>
+                <h2 class="fs-32">Oops...</h2>
+                <p>Aucun thème n'est disponible pour cette catégorie. Des thèmes peuvent être ajoutés dans le menu <span class="highlight" @click="this.$router.push(`/settings`)">Options</span> ou en cliquant sur le bouton ci-dessous.</p>
+                <button
+                    class="btn mt-4"
+                    @click="showModal = true"
+                >
+                    Ajouter un thème
+                </button>
+
+                <button
+                    class="btn btn-secondary mt-2"
+                    @click="this.$router.push(`/`)"
+                >
+                    Retour
+                </button>
+            </div>
+        </ModalSheet>
+
+        <!-- ➕ AJOUTER UN NOUVEAU THÈME -->
         <ModalSheet 
             :height="'35'"
             v-if="showModal" 
@@ -56,11 +82,33 @@ export default {
     },
     methods: {
         addTheme: function() {
+            this.appendTheme();
+            let themes = localStorage.getItem('flashcards_themes');
+            this.themes = JSON.parse(themes).filter(theme => theme.category_id === this.$route.params.categoryId);
+            this.theme_name = "";
             this.showModal = false;
         },
         handler(themeId) {
             this.$router.push(`/${this.$route.params.categoryId}/${themeId}`) // ROUTER.PUSH MAIS ROUTE.PARAMS (SANS R)
         },
+        appendTheme() {
+            let themes = localStorage.getItem('flashcards_themes');
+            this.themes = JSON.parse(themes);
+            themes = JSON.parse(themes);
+            let newTheme = {
+                "id": `${Date.now()}`,
+                "category_id": `${this.$route.params.categoryId}`,
+                "name": this.theme_name,
+                "icon": "star.png"
+            }
+            for (const item of themes)
+                if(newTheme.id <= parseInt(item.id))
+                    newTheme.id = parseInt(item.id) + 1;
+                    
+            themes.push(newTheme);
+            let json = JSON.stringify(themes);
+            localStorage.setItem('flashcards_themes', json);
+        }
     },
     components: {
         Wrapper,
@@ -73,6 +121,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
 
 input {
     background-color: transparent;
@@ -87,10 +141,20 @@ input:focus {
     border-bottom: 2px solid #4F42D8;
 }
 
-button {
+.btn {
     background-color: #4F42D8;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
 }
+
+.btn-secondary {
+    background-color: transparent;
+    border: 3px solid #4F42D8;
+    color: #4F42D8;
+    font-weight: bold;
+    text-transform: uppercase;
+    min-width: 178px;
+}
+
 </style>

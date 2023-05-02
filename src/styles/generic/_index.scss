@@ -13,7 +13,6 @@ $spacer: 16px;
     justify-content: space-between;
 }
 
-
 .aic {
     align-items: center;
 }
@@ -24,6 +23,14 @@ $spacer: 16px;
 
 .text-center {
     text-align: center;
+}
+
+.pos-relative {
+    position: relative;
+}
+
+.d-none {
+    display: none;
 }
 
 @mixin gap($i) {

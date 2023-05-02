@@ -8,10 +8,10 @@
 				<div class="card__content">
 					<div class="card__body">
 						<h3>{{ card.answer }}</h3>
-                        <div class="right-wrong-buttons d-flex jcsb">
-                            <button @click="validate(false)">❌</button>
-                            <button @click="validate(true)">✔️</button>
-                        </div>
+              <div class="right-wrong-buttons d-flex jcsb">
+                  <button @click="validate(false)">❌</button>
+                  <button @click="validate(true)">✔️</button>
+              </div>
 					</div>
 				</div>
 			</div>
@@ -32,13 +32,13 @@ export default {
             }
             target.classList.toggle('is-flipped');
         },
-        validate: function(isCorrect) {
-            this.$emit('next');
+        validate(isCorrect) {
             if(isCorrect) {
-                console.log(this.card.answer)
+              this.$emit('changeLevel', true);
             } else {
-
-            };
+              this.$emit('changeLevel', false);
+            }
+            // this.$emit('next');
         }
     },
 }
