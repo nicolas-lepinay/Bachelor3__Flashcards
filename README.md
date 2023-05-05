@@ -8,7 +8,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Home (liste des catégories),\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Themes (liste des thèmes),\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Cards,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Settings.\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Settings.
 
 ⚙️ Développée avec 𝐕𝐮𝐞.𝐣𝐬
 
