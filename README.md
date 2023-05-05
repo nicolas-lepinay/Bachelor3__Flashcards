@@ -4,6 +4,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• affichage des cartes en fonction du taux de réussite,\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ajout, modification et suppression de catégories, de thèmes et de cartes.
 
+🖵 Views :\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Home (liste des catégories),\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Themes (liste des thèmes),\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Cards,\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Settings.\
+
 ⚙️ Développée avec 𝐕𝐮𝐞.𝐣𝐬
 
 👉 Contributeurs : Nicolas Lépinay, Cyprien Siaud.
