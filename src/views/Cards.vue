@@ -92,143 +92,117 @@
 </template>
 
 <script>
-import Wrapper from '../components/Wrapper.vue';
-import Sheet from '../components/Sheet.vue';
-import Card from '../components/Card.vue';
-import ModalSheet from '../components/ModalSheet.vue';
+    import Wrapper from '../components/Wrapper.vue';
+    import Sheet from '../components/Sheet.vue';
+    import Card from '../components/Card.vue';
+    import ModalSheet from '../components/ModalSheet.vue';
+    import { useCardStore } from '@/stores/cardsStore';
+    import { useCategoryStore } from '@/stores/categoriesStore';
+    import { useThemeStore } from '@/stores/themesStore';
 
-import data from '../data/data.json'
+    const categoryStore = useCategoryStore();
+    const themeStore = useThemeStore();
+    const cardsStore = useCardStore();
 
-export default {
-    name: 'Cards',
-    data() {
-        return {
-            cards: data.cards,
-            index: 0,
-            showModal: false,
-            showNewCardModal: false,
-            showAllClearModal: false,
-            card_question: '',
-            card_answer: '',
-            category: {},
-            theme: {}
-        }
-    },
-    mounted() {
-        // GET ALL CARDS
-        let cards = localStorage.getItem('flashcards_cards');
-        if(!cards) {
-            localStorage.setItem('flashcards_cards', JSON.stringify(this.cards));
-            cards = localStorage.getItem('flashcards_cards');
-        }
-
-        let finished = false;
-        this.cards = JSON.parse(cards).filter((card) => {
-            if(card.theme_id !== this.$route.params.themeId) return false;
-
-            let today = new Date().setHours(0, 0, 0, 0);
-            let date = new Date(card.date).setHours(0, 0, 0, 0);
-            let days = parseInt(card.level);
-
-            if(days == -1){
-                return true;
-            }else if(date + days + 1 >= today){
-                return true;
-            }else {
-                finished = true;
-                return false;
+    export default {
+        name: 'Cards',
+        data() {
+            return {
+                cards: [],
+                index: 0,
+                showModal: false,
+                showNewCardModal: false,
+                showAllClearModal: false,
+                card_question: '',
+                card_answer: '',
+                category: {},
+                theme: {}
             }
-        });
-        this.showAllClearModal = finished;
+        },
+        mounted() {
 
-        // SET CURRENT THEME NAME
-        let themeId = this.$route.params.themeId;
-        const themes = localStorage.getItem('flashcards_themes');
-        const theme = JSON.parse(themes).filter(theme => theme.id === themeId)[0];
-        this.theme = theme;
+            let finished = false;
+            this.cards = cardsStore.getByTheme(this.$route.params.themeId).filter((card) => {
+                let today = new Date().setHours(0, 0, 0, 0);
+                let date = new Date(card.date).setHours(0, 0, 0, 0);
+                let days = parseInt(card.level);
 
-        // SET CURRENT CATEGORY NAME
-        let categoryId = this.$route.params.categoryId;
-        const categories = localStorage.getItem('flashcards_categories');
-        const category = JSON.parse(categories).filter(cat => cat.id === categoryId)[0];
-        this.category = category;
-    },
-    methods: {
-        next: function() {
-            setTimeout(() => {
-                if(this.index < this.cards.length - 1) {
-                    this.index = this.index + 1; // Passe à la carte suivante
-                } else {
-                    this.showModal = true; // Affiche la modal de success
+                if(days == -1){
+                    return true;
+                }else if(date + days + 1 >= today){
+                    return true;
+                }else {
+                    finished = true;
+                    return false;
                 }
-            }, "300");
-        },
-        addCard: function() {
-            let themeId = this.$route.params.themeId;
-            this.appendCard(themeId);
-            this.card_question = "";
-            this.card_answer = "";
-            this.showNewCardModal = false;
-        },
-        appendCard(themeId){
-            let newCard = {
-                "id": `${Date.now()}`,
-                "theme_id": `${themeId}`,
-                "question": this.card_question,
-                "answer": this.card_answer,
-                "date": "",
-                "level": -1,
-                "image": "X.png"
-            }
-            
-            let cards = localStorage.getItem('flashcards_cards');
-            this.cards = JSON.parse(cards);
-            cards = JSON.parse(cards);
-            for (const item of cards)
-                if(newCard.id <= parseInt(item.id))
-                    newCard.id = parseInt(item.id) + 1;
-                    
-            cards.push(newCard);
-            console.log(cards);
+            });
+            this.showAllClearModal = finished;
 
-            this.cards = cards.filter(card => card.theme_id === this.$route.params.themeId);
-            let json = JSON.stringify(cards);
-            localStorage.setItem('flashcards_cards', json);
-        },
-        changeLevel(validate){
-            let baseCards = JSON.parse(localStorage.getItem('flashcards_cards'));
-            let actualCard = baseCards.find(card => card.id == this.cards[this.index].id)
-            let index = baseCards.indexOf(actualCard);
+            // SET CURRENT THEME NAME
+            this.theme = themeStore.get(this.$route.params.themeId);
 
-            if(validate){
-                if(baseCards[index].level == -1)
-                    baseCards[index].level = 1
-                else
-                    baseCards[index].level = baseCards[index].level + 1;
-            }else{
-                baseCards[index].level = 0;
+            // SET CURRENT CATEGORY NAME
+            this.category = categoryStore.get(this.$route.params.categoryId);
+        },
+        methods: {
+            next: function() {
+                setTimeout(() => {
+                    if(this.index < this.cards.length - 1) {
+                        this.index = this.index + 1; // Passe à la carte suivante
+                    } else {
+                        this.showModal = true; // Affiche la modal de success
+                    }
+                }, "300");
+            },
+            addCard: function() {
+                this.appendCard();
+                this.cards = cardsStore.getByTheme(this.$route.params.themeId)
+                this.card_question = "";
+                this.card_answer = "";
+                this.showNewCardModal = false;
+            },
+            appendCard(){
+                let newCard = {
+                    "id": parseInt(Date.now()),
+                    "theme_id": `${this.$route.params.themeId}`,
+                    "question": this.card_question,
+                    "answer": this.card_answer,
+                    "date": "",
+                    "level": -1,
+                    "image": "X.png"
+                }
+                cardsStore.create(newCard);
+            },
+            changeLevel(validate){
+                let actualCard = cardsStore.get(this.cards[this.index].id)
+
+                if(validate){
+                    if(actualCard.level == -1)
+                        actualCard.level = 1
+                    else
+                        actualCard.level = actualCard.level + 1;
+                }else{
+                    actualCard.level = 0;
+                }
+                actualCard.date = `${Date.now()}`;
+                cardsStore.update(actualCard);
+                this.next();
             }
-            baseCards[index].date = `${Date.now()}`;
-            
-            let json = JSON.stringify(baseCards);
-            localStorage.setItem('flashcards_cards', json);
-            this.next();
+        },
+        computed:{
+            nextable: {
+                get() {
+                    return this.index < this.cards.length - 1;
+                }
+            },
+        },
+        components: {
+            Wrapper,
+            Sheet,
+            Card,
+            ModalSheet
         }
-    },
-    computed:{
-        nextable: {
-            get() {
-                return this.index < this.cards.length - 1;
-            }
-        },
-    },
-    components: {
-        Wrapper,
-        Sheet,
-        Card,
-        ModalSheet
     }
-}
 
 </script>
 
