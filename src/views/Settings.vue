@@ -43,7 +43,7 @@
             </button>
         </ModalSheet>
         <ModalSheet 
-            :height="'35'"
+            :height="'45'"
             v-if="showEditCardModal" 
             @close="showEditCardModal = false"
         >
