@@ -8,6 +8,7 @@ const routes = [
     { path: '/settings/:categoryId', component: () => import('../views/Settings.vue') },
     { path: '/settings/:categoryId/:themeId', component: () => import('../views/Settings.vue') },
     { path: '/settings/:categoryId/:themeId/:cardId', component: () => import('../views/Settings.vue') },
+    { path: '/reset', component: () => import('../views/Reset.vue') },
 ]
 
 const router = createRouter({

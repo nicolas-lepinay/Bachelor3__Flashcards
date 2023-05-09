@@ -30,65 +30,52 @@
 </template>
 
 <script>
-import Wrapper from '../components/Wrapper.vue';
-import Sheet from '../components/Sheet.vue';
-import SquareList from '../components/SquareList.vue';
-import ModalSheet from '../components/ModalSheet.vue';
+    import Wrapper from '../components/Wrapper.vue';
+    import Sheet from '../components/Sheet.vue';
+    import SquareList from '../components/SquareList.vue';
+    import ModalSheet from '../components/ModalSheet.vue';
+    import { useCategoryStore } from '@/stores/categoriesStore';
 
-import data from '../data/data.json'
+    const categoryStore = useCategoryStore();
 
-export default {
-    name: 'Home',
-    data() {
-        return {
-            categories: data.categories,
-            showModal: false,
-            category_name: ''
-        }
-    },
-    mounted() {
-        let categories = localStorage.getItem('flashcards_categories');
-        if(!categories) {
-            localStorage.setItem('flashcards_categories', JSON.stringify(this.categories));
-            categories = localStorage.getItem('flashcards_categories');
-        }
-        this.categories = JSON.parse(categories);
-    },
-    methods: {
-        addCategory: function() {
-            this.appendCategory();
-            this.categories = JSON.parse(localStorage.getItem('flashcards_categories'));
-            this.category_name = "";
-            this.showModal = false;
-        },
-        handler(categoryId) {
-            this.$router.push(`/${categoryId}`)
-        },
-        appendCategory() {
-            let categories = localStorage.getItem('flashcards_categories');
-            this.categories = JSON.parse(categories);
-            categories = JSON.parse(categories);
-            let newCategory = {
-                "id": `${Date.now()}`,
-                "name": this.category_name,
-                "icon": "star.png"
+    export default {
+        name: 'Home',
+        data() {
+            return {
+                categories: [],
+                showModal: false,
+                category_name: ''
             }
-            for (const item of categories)
-                if(newCategory.id <= parseInt(item.id))
-                    newCategory.id = parseInt(item.id) + 1;
-                    
-            categories.push(newCategory);
-            let json = JSON.stringify(categories);
-            localStorage.setItem('flashcards_categories', json);
+        },
+        mounted() {
+            this.categories = categoryStore.getAll;
+        },
+        methods: {
+            addCategory: function() {
+                this.appendCategory();
+                this.categories = categoryStore.getAll;
+                this.category_name = "";
+                this.showModal = false;
+            },
+            handler(categoryId) {
+                this.$router.push(`/${categoryId}`)
+            },
+            appendCategory() {
+                let newCategory = {
+                    "id": parseInt(Date.now()),
+                    "name": this.category_name,
+                    "icon": "star.png"
+                }
+                categoryStore.create(newCategory);
+            }
+        },
+        components: {
+            Wrapper,
+            Sheet,
+            SquareList,
+            ModalSheet
         }
-    },
-    components: {
-        Wrapper,
-        Sheet,
-        SquareList,
-        ModalSheet
     }
-}
 
 </script>
 
@@ -113,4 +100,4 @@ export default {
         font-weight: bold;
         text-transform: uppercase;
     }
-</style>
+</style>flashcards_categories

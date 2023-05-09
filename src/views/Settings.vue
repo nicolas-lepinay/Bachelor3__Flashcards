@@ -68,6 +68,13 @@
     import Sheet from '../components/Sheet.vue';
     import GestionList from '../components/GestionList.vue';
     import ModalSheet from '../components/ModalSheet.vue';
+    import { useCategoryStore } from '@/stores/categoriesStore';
+    import { useThemeStore } from '@/stores/themesStore';
+    import { useCardStore } from '@/stores/cardsStore';
+
+    const categoryStore = useCategoryStore();
+    const themeStore = useThemeStore();
+    const cardStore = useCardStore();
 
     export default {
         name: 'Settings',
@@ -84,27 +91,25 @@
                 placeholder: "Nom de la catégorie",
                 modalTitle: "une catégorie", 
                 actionTitle: "Ajouter",
-                editItem: {}
+                editItem: {},
+                categoryId: "",
+                themeId: ""
             } 
         },
-        mounted() {
-                setTimeout(() => {
-                    this.loadData();
-                    this.updateVars();
-                }, 250);
+        mounted() { 
+            setTimeout(() => {
+                this.loadData();
+                this.updateVars();
+            }, 250);
         },
         methods: {
             handler(itemId) {
-                console.log("handle");
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
-
-                if(!categoryId && !themeId){
+                if(!this.categoryId && !this.themeId){
                     this.$router.push(`/settings/${itemId}`) 
-                }else if(categoryId && !themeId){
-                    this.$router.push(`/settings/${categoryId}/${itemId}`) 
+                }else if(this.categoryId && !this.themeId){
+                    this.$router.push(`/settings/${this.categoryId}/${itemId}`) 
                 }else{
-                    this.$router.push(`/settings/${categoryId}/${themeId}/${itemId}`) 
+                    this.$router.push(`/settings/${this.categoryId}/${this.themeId}/${itemId}`) 
                 }
 
                 setTimeout(() => {
@@ -113,43 +118,32 @@
                 }, 100);
             },
             loadData(){
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
+                this.categoryId = this.$route.params.categoryId;
+                this.themeId = this.$route.params.themeId;
 
                 // GET items
-                if(!categoryId && !themeId){
-                    this.items = JSON.parse(localStorage.getItem('flashcards_categories'));
-
-                }else if(categoryId && !themeId){
-                    let themes = JSON.parse(localStorage.getItem('flashcards_themes'))
-                    this.items = themes.filter(theme => theme.category_id === categoryId);
-
+                if(!this.categoryId && !this.themeId){
+                    this.items = categoryStore.getAll;
+                }else if(this.categoryId && !this.themeId){
+                    this.items = themeStore.getByCategory(this.categoryId);
                 }else{
-                    let cards = JSON.parse(localStorage.getItem('flashcards_cards'))
-                    this.items = cards.filter(card => {
-                        return card.theme_id == themeId
-                    });
+                    this.items = cardStore.getByTheme(this.themeId);
                 }
             },
             updateVars(){
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
-
-                // GET items
-
-                if(!categoryId && !themeId){
+                // SET variables
+                if(!this.categoryId && !this.themeId){
                     this.placeholder = "Nom de la catégorie";
                     this.modalTitle = "une catégorie";
-                }else if(categoryId && !themeId){
+                }else if(this.categoryId && !this.themeId){
                     this.placeholder = "Nom du thème";
                     this.modalTitle = "un thème";
                 }
             },
             handlerAction(toEdit, id) {
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
-                let type = !categoryId && !themeId ? 
-                    "categories" : categoryId && !themeId ? 
+                console.log(toEdit, id);
+                let type = !this.categoryId && !this.themeId ? 
+                    "categories" : this.categoryId && !this.themeId ? 
                         "themes" : "cards"; 
 
                 this.actionTitle = toEdit ? "Modifier" : "Ajouter";
@@ -161,48 +155,22 @@
                     this.showEditModal = true
                     this.editItem = this.items.find((item) => item.id == id)
                 }else{
+                    switch (type) {
+                        case "categories":
+                            themeStore.deleteByCategory(id);
+                            categoryStore.delete(id);
+                            break;
+                        case "themes":
+                            cardStore.deleteByTheme(id)
+                            themeStore.delete(id);
+                            break;
+                        case "cards":
+                            cardStore.delete(id);
+                            break;
                     
-                    let baseItems = JSON.parse(localStorage.getItem(`flashcards_${type}`));
-                    let index = baseItems.indexOf(
-                        baseItems.find(item =>{ 
-                            return item.id == id
-                        })
-                    );
-                    baseItems.splice(index, 1);
-
-                    localStorage.setItem(`flashcards_${type}`, JSON.stringify(baseItems));
-
-                    if(type == "categories"){
-                        let themes = JSON.parse(localStorage.getItem(`flashcards_themes`));
-                        
-                        for (let index = themes.length - 1; index >= 0 ; index--) {
-                            let theme = themes[index];
-                            if(theme.category_id == id) {
-                                themes.splice(index, 1);
-
-                                let cards = JSON.parse(localStorage.getItem(`flashcards_cards`));
-                                
-                                for (let index = cards.length - 1; index >= 0 ; index--) {
-                                    let card = cards[index];
-                                    if(card.theme_id == theme.id) cards.splice(index, 1);
-                                }
-                                
-                                localStorage.setItem(`flashcards_cards`, JSON.stringify(cards));
-                            }
-                        }
-                        console.log("themes - ", themes);
-                        localStorage.setItem(`flashcards_themes`, JSON.stringify(themes));
-                    }else if(type == "themes"){
-                        let cards = JSON.parse(localStorage.getItem(`flashcards_cards`));
-                        
-                        for (let index = cards.length - 1; index >= 0 ; index--) {
-                            let card = cards[index];
-                            if(card.theme_id == id) cards.splice(index, 1);
-                        }
-
-                        localStorage.setItem(`flashcards_cards`, JSON.stringify(cards));
+                        default:
+                            break;
                     }
-
                 }
                 
 
@@ -214,24 +182,24 @@
             editItemFn() {
                 if(!this.editItem.id) this.appendItem()
                 else{
-                    let categoryId = this.$route.params.categoryId;
-                    let themeId = this.$route.params.themeId;
-                    let type = !categoryId && !themeId ? 
-                        "categories" : categoryId && !themeId ? 
+                    let type = !this.categoryId && !this.themeId ? 
+                        "categories" : this.categoryId && !this.themeId ? 
                             "themes" : "cards";
                     
-                    let baseItems = JSON.parse(localStorage.getItem(`flashcards_${type}`));
-    
-                    let index = baseItems.indexOf(
-                        baseItems.find(item =>{ 
-                            return item.id == this.editItem.id
-                        })
-                    );
-                        
-                    baseItems[index] = this.editItem;
-                    this.items = baseItems;
-    
-                    localStorage.setItem(`flashcards_${type}`, JSON.stringify(baseItems));
+                    switch (type) {
+                        case "categories":
+                            categoryStore.update(this.editItem);
+                            break;
+                        case "themes":
+                            themeStore.update(this.editItem);
+                            break;
+                        case "cards":
+                            cardStore.update(this.editItem);
+                            break;
+                    
+                        default:
+                            break;
+                    }
                 }
                 setTimeout(() => {
                     this.showEditModal = false;
@@ -241,10 +209,8 @@
                 }, 100);
             },
             createItem(){
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
-                let type = !categoryId && !themeId ? 
-                    "categories" : categoryId && !themeId ? 
+                let type = !this.categoryId && !this.themeId ? 
+                    "categories" : this.categoryId && !this.themeId ? 
                         "themes" : "cards"; 
 
                 this.editItem = {};
@@ -255,27 +221,30 @@
                     this.showEditModal = true;
             },
             appendItem(){
-                let categoryId = this.$route.params.categoryId;
-                let themeId = this.$route.params.themeId;
-                let type = !categoryId && !themeId ? 
-                    "categories" : categoryId && !themeId ? 
+                let type = !this.categoryId && !this.themeId ? 
+                    "categories" : this.categoryId && !this.themeId ? 
                         "themes" : "cards";
                 
-                console.log(this.editItem);
-                let baseItems = JSON.parse(localStorage.getItem(`flashcards_${type}`));
                 this.editItem.id = Date.now();
-                if(type != "cards") this.editItem.icon = "star.png";
-
-                if(type == "themes"){
-                    this.editItem.category_id = categoryId;
-                }else if(type == "cards"){
-                    this.editItem.theme_id = themeId;
-                }
-                console.log(this.editItem);
-
-                baseItems.push(this.editItem)
-                localStorage.setItem(`flashcards_${type}`, JSON.stringify(baseItems));
-
+                
+                switch (type) {
+                        case "categories":
+                            this.editItem.icon = "star.png";
+                            categoryStore.create(this.editItem);
+                            break;
+                        case "themes":
+                            this.editItem.icon = "star.png";
+                            this.editItem.category_id = this.categoryId;
+                            themeStore.create(this.editItem);
+                            break;
+                        case "cards":
+                            this.editItem.theme_id = this.themeId;
+                            cardStore.create(this.editItem);
+                            break;
+                    
+                        default:
+                            break;
+                    }
                 setTimeout(() => {
                     this.loadData();
                     this.updateVars();

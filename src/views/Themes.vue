@@ -56,68 +56,53 @@
 </template>
 
 <script>
-import Wrapper from '../components/Wrapper.vue';
-import Sheet from '../components/Sheet.vue';
-import SquareList from '../components/SquareList.vue';
-import ModalSheet from '../components/ModalSheet.vue';
+    import Wrapper from '../components/Wrapper.vue';
+    import Sheet from '../components/Sheet.vue';
+    import SquareList from '../components/SquareList.vue';
+    import ModalSheet from '../components/ModalSheet.vue';
+    import { useThemeStore } from '@/stores/themesStore';
 
-import data from '../data/data.json'
+    const themeStore = useThemeStore();
 
-export default {
-    name: 'Themes',
-    data() {
-        return {
-            themes: data.themes,
-            showModal: false,
-            theme_name: ''
-        }
-    },
-    mounted() {
-        let themes = localStorage.getItem('flashcards_themes');
-        if(!themes) {
-            localStorage.setItem('flashcards_themes', JSON.stringify(this.themes));
-            themes = localStorage.getItem('flashcards_themes');
-        }
-        this.themes = JSON.parse(themes).filter(theme => theme.category_id === this.$route.params.categoryId);
-    },
-    methods: {
-        addTheme: function() {
-            this.appendTheme();
-            let themes = localStorage.getItem('flashcards_themes');
-            this.themes = JSON.parse(themes).filter(theme => theme.category_id === this.$route.params.categoryId);
-            this.theme_name = "";
-            this.showModal = false;
-        },
-        handler(themeId) {
-            this.$router.push(`/${this.$route.params.categoryId}/${themeId}`) // ROUTER.PUSH MAIS ROUTE.PARAMS (SANS R)
-        },
-        appendTheme() {
-            let themes = localStorage.getItem('flashcards_themes');
-            this.themes = JSON.parse(themes);
-            themes = JSON.parse(themes);
-            let newTheme = {
-                "id": `${Date.now()}`,
-                "category_id": `${this.$route.params.categoryId}`,
-                "name": this.theme_name,
-                "icon": "star.png"
+    export default {
+        name: 'Themes',
+        data() {
+            return {
+                themes: [],
+                showModal: false,
+                theme_name: ''
             }
-            for (const item of themes)
-                if(newTheme.id <= parseInt(item.id))
-                    newTheme.id = parseInt(item.id) + 1;
-                    
-            themes.push(newTheme);
-            let json = JSON.stringify(themes);
-            localStorage.setItem('flashcards_themes', json);
+        },
+        mounted() {
+            this.themes = themeStore.getByCategory(this.$route.params.categoryId);
+        },
+        methods: {
+            addTheme: function() {
+                this.appendTheme();
+                this.themes = themeStore.getByCategory(this.$route.params.categoryId)
+                this.theme_name = "";
+                this.showModal = false;
+            },
+            handler(themeId) {
+                this.$router.push(`/${this.$route.params.categoryId}/${themeId}`) // ROUTER.PUSH MAIS ROUTE.PARAMS (SANS R)
+            },
+            appendTheme() {
+                let newTheme = {
+                    "id": parseInt(Date.now()),
+                    "category_id": parseInt(this.$route.params.categoryId),
+                    "name": this.theme_name,
+                    "icon": "star.png"
+                }
+                themeStore.create(newTheme);
+            }
+        },
+        components: {
+            Wrapper,
+            Sheet,
+            SquareList,
+            ModalSheet
         }
-    },
-    components: {
-        Wrapper,
-        Sheet,
-        SquareList,
-        ModalSheet
     }
-}
-
 </script>
 
 <style lang="scss" scoped>
