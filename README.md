@@ -2,7 +2,9 @@
 
 📱 Une application web de cartes de révision :\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• affichage des cartes en fonction du taux de réussite,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ajout, modification et suppression de catégories, de thèmes et de cartes.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Ajout, modification et suppression de catégories, de thèmes et de cartes,\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Sauvegarde des modifications dans le Store 𝐏𝐢𝐧𝐢𝐚.
+
 
 🖵 Views :\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Home (liste des catégories),\
